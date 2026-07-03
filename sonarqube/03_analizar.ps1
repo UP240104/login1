@@ -1,6 +1,6 @@
 # S8.1 - Ejecutar el analisis del proyecto con el SonarScanner (Windows/Mac)
 # Uso:
-#   $env:SONAR_TOKEN = "sqa_725d1bf364bdff25108cf3a4ec5d01a9ac137391"
+#   $env:SONAR_TOKEN = ""
 #   ./sonarqube/03_analizar.ps1
 
 param(
