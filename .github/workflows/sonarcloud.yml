@@ -16,14 +16,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Diagnostico Chrome
+      - name: Instalar Google Chrome
         run: |
-          echo "--- which ---"
-          which google-chrome || echo "google-chrome no encontrado en PATH"
-          which google-chrome-stable || echo "google-chrome-stable no encontrado en PATH"
-          which chromium-browser || echo "chromium-browser no encontrado en PATH"
-          echo "--- busqueda en disco ---"
-          find / -iname "*chrome*" -type f 2>/dev/null | grep -v "/proc/" | head -50
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends google-chrome-stable
+          which google-chrome
+          google-chrome --version
       - run: pip install -r requirements.txt pytest-cov
       - run: pytest --cov=pages --cov-report=xml
       - uses: SonarSource/sonarqube-scan-action@v3
