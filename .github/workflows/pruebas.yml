@@ -1,22 +1,23 @@
-name: Pruebas E2E
-on: [push, pull_request]
+name: SonarCloud
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
-  e2e:
+  sonarcloud:
     runs-on: ubuntu-latest
     env:
-      HEADLESS: "1"          # Chrome sin ventana (servidor sin pantalla)
-    defaults:
-      run:
-        working-directory: scripts/semana07_s2_selenium
+      HEADLESS: "1"
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
-      - run: pytest --html=reporte.html --self-contained-html
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: reporte
-          path: scripts/semana07_s2_selenium/reporte.html
+      - run: pip install -r requirements.txt pytest-cov
+      - run: pytest --cov=pages --cov-report=xml
+      - uses: SonarSource/sonarqube-scan-action@v3
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
